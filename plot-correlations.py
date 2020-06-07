@@ -296,7 +296,7 @@ def show_correlations(corr, title, large, diagonal, position, is_p):
 
     plt.tight_layout()
 
-    save_path = f'img/{mode}/{crowdworker_group}/{title.replace(" ", "-")}'
+    save_path = f'img/correlations/{mode}/{crowdworker_group}/{title.replace(" ", "-")}'
 
     if is_p:
         save_path += '_p-values'
