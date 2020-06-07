@@ -10,8 +10,6 @@ from collections import Counter
 # ...AND PROVIDING ARTICLE OBJECTS FOR STATISTICS
 
 
-path_full = r'..\reports\full'
-
 
 jobs = ("subj", "hidden-assumpt", "framing", "bias")
 # we splitted the annotation jobs in three groups according to the length of the articles to be labeled
@@ -66,6 +64,7 @@ crowdworkers = {
 }
 
 articles = []
+current_cw_group = ''
 
 # CALL THIS FUNCTION by other scripts to receive article annotation.
 # if there were no crowdworkers from the specified country group that judged sentences of an article,
@@ -86,12 +85,12 @@ def get_articles(cw_group):
 def main(workers_group):
 
     get_all_annotation_in_objects(workers_group)
-    calculate_sentence_scores(workers_group == "default")
-    calculate_article_scores()
+    calculate_sentence_scores()
+    if workers_group == "default":
+        calculate_article_scores()
     get_expert_leaning_per_article()
-    write_json_files()
-    # write_sent_annotation_in_file()
-    # write_labels_in_file()
+    # write_json_files()
+   
     print("Created all article objects!")
 
     return articles, crowdworkers
@@ -114,7 +113,7 @@ def get_all_annotation_in_objects(group_name):
 
     for job in jobs:
         for group in groups:
-            this_path = path_full + "\\" + job + "-" + group + ".csv"
+            this_path = "reports\\full" + "\\" + job + "-" + group + ".csv"
             file = open(this_path, "r", encoding='utf-8')
             csv_reader = csv.DictReader(file, delimiter=",")
 
@@ -334,7 +333,7 @@ def write_labels_in_file():
                 writer.writerow(current_row)
 
 
-def calculate_sentence_scores(all_modes):
+def calculate_sentence_scores():
 
     # helper method, use when necessary
     def check_if_empty(vals):
@@ -345,11 +344,6 @@ def calculate_sentence_scores(all_modes):
     for job in jobs:
         for article in articles:
             for sent in article.sentences:
-                if not all_modes:
-                    modi = ["avg", "maj"]
-                else:
-                    modi = ["avg", "maj", "intensified"]
-
                 for mode in modi:
                     if job == "framing" or job == "bias":
                         for key in sent.values[job]:
@@ -398,7 +392,7 @@ def get_expert_leaning_per_article():
 
     # you need access to the original data set of Cremisini et al. in order to receive the expert article leaning
     wb = openpyxl.load_workbook(
-        filename=r'..\..\..\Ukraine-Crisis-Dataset\mediabias-dataset-andres\ukr_final_DAG.xlsx')
+        filename=r'..\ukr_final_DAG.xlsx')
     sheet = wb.active
 
     for article in articles:

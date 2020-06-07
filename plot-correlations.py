@@ -10,7 +10,7 @@ import articleHandler as handler
 
 #  SELECT CROWDWORKER GROUP
 crowdworker_group = "default"
-# crowdworker_group = "sowj"  # not enough judgements, less tan 10 crowdworkers!
+# crowdworker_group = "sowj"  # not enough judgements, less than 10 crowdworkers!
 # crowdworker_group = "west"
 # crowdworker_group = "rest"
 
@@ -103,6 +103,9 @@ if not ONLY_SENTENCES:
 
 def split_framing_scale_helper(scale, val):
     # this function simplifies the creation of the sentence dimensions dictionary (sent_dimensions_dict)
+
+    if val is None:
+        return None
 
     if scale == 'neg':
         return abs(min(0, val))
@@ -394,7 +397,8 @@ def print_expert_correlations():
 
         print(p_values)
 
-    print(corr_leaning_total)
+    if not ONLY_SENTENCES:
+        print(corr_leaning_total)
     print(leaning_total_sentences)
 
 
@@ -431,8 +435,9 @@ def show_expert_correlations():
 
     show_correlations(corr=leaning_total_sentences, title="Sentence Labels and Article Leanings", large=True,
                       diagonal=False, position='top', is_p=False)
-    show_correlations(corr=corr_leaning_total, title="Article Labels and Article Leanings", large=True,
-                      diagonal=False, position='top', is_p=False)
+    if not ONLY_SENTENCES:
+        show_correlations(corr=corr_leaning_total, title="Article Labels and Article Leanings", large=True,
+                          diagonal=False, position='top', is_p=False)
 
 
 print_inner_correlations()
