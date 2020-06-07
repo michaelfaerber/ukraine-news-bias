@@ -251,7 +251,7 @@ def write_json_files():
             data['sentences'].append(get_sent_obj(mySent, data['id']))
             sentence_counter += 1
 
-        with open('JSON_FILES/' + data['id'] + '.json', 'w') as outfile:
+        with open('all-data-as-json/' + data['id'] + '.json', 'w') as outfile:
             json.dump(data, outfile)
 
 
