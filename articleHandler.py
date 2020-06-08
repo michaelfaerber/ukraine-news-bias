@@ -197,7 +197,6 @@ def write_json_files():
         data['sentences'] = []
 
         framing = {'russia': {}, 'ukraine': {}, 'west': {}}
-        bias = {'pro-russia': {}, 'pro-west': {}}
 
         for gov in framing:
             framing[gov]['pos_sent'] = {}
@@ -210,12 +209,11 @@ def write_json_files():
                 framing[gov]['neutral_sent'][mode] = article.scores['framing'][gov][mode][1][1]
                 framing[gov]['neg_sent'][mode] = article.scores['framing'][gov][mode][2][1]
 
-            for key in bias:
-                bias[key][mode] = article.scores['bias'][key][mode]
 
         data['subjectivity'] = article.scores["subj"]
         data['hidden_assumptions'] = article.scores["hidden-assumpt"]
         data['framing'] = framing
+        data['bias'] = article.scores['bias']
 
         def get_sent_obj(sent, art_id):
             current_sent = {}

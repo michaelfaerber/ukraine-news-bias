@@ -304,7 +304,7 @@ def show_correlations(corr, title, large, diagonal, position, is_p):
     if is_p:
         save_path += '_p-values'
 
-    plt.savefig(save_path)
+    plt.savefig(save_path + '.pdf')
     # plt.show()
     plt.close(fig)
 
