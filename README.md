@@ -3,9 +3,9 @@
 
 We provide a large data set consisting of **2,057 sentences** from 90 news articles and annotations of crowdworkers with respect to **bias** itself and the following **bias dimensions**:
 
-    hidden assumptions
-    subjectivity
-    representation tendencies
+* hidden assumptions
+* subjectivity
+* representation tendencies
 
 Our data set contains **44,547 labels in total** (43,197 sentence labels and 1,350 article labels).
 
