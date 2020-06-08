@@ -1,4 +1,4 @@
-# ukraine-news-bias
+# news-multi-bias
 ## Summary
 
 On [Zenodo](https://doi.org/10.5281/zenodo.3885351) and in the folder [all-data-as-json](all-data-as-json), we provide a large data set consisting of **2,057 sentences** from 90 news articles and annotations of crowdworkers with respect to **bias** itself and the following **bias dimensions**:
