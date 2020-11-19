@@ -90,7 +90,8 @@ def main(workers_group):
         calculate_article_scores()
     get_expert_leaning_per_article()
     # write_json_files()
-   
+    write_csv_files()
+
     print("Created all article objects!")
 
     return articles, crowdworkers
@@ -113,7 +114,7 @@ def get_all_annotation_in_objects(group_name):
 
     for job in jobs:
         for group in groups:
-            this_path = "reports\\full" + "\\" + job + "-" + group + ".csv"
+            this_path = "./reports/full" + "/" + job + "-" + group + ".csv"
             file = open(this_path, "r", encoding='utf-8')
             csv_reader = csv.DictReader(file, delimiter=",")
 
@@ -250,6 +251,21 @@ def write_json_files():
 
         with open('all-data-as-json/' + data['id'] + '.json', 'w') as outfile:
             json.dump(data, outfile)
+
+
+def write_csv_files():
+    sentences = [sent for art in articles for sent in art.sentences]
+    my_mode = "avg"
+    for job in jobs:
+        file_path = "all-data-as-csv/sentences-with-binary-labels-" + job + ".csv"
+        with open(file_path, 'w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            for sent in sentences:
+                writer.writerow(
+                    [sent.content.strip('\"'), int(sent.is_biased(job, my_mode))]
+                )
+
+
 
 
 def write_sent_annotation_in_file():
@@ -389,9 +405,12 @@ def get_expert_leaning_per_article():
         print("Article Leaning not found!")
 
     # you need access to the original data set of Cremisini et al. in order to receive the expert article leaning
-    wb = openpyxl.load_workbook(
-        filename=r'..\ukr_final_DAG.xlsx')
-    sheet = wb.active
+    try:
+        wb = openpyxl.load_workbook(
+            filename=r'..\ukr_final_DAG.xlsx')
+        sheet = wb.active
+    except FileNotFoundError:
+        return    
 
     for article in articles:
         current_id = article.article_id
@@ -750,4 +769,4 @@ class Crowdworker:
 
 
 # IF YOU ONLY WANT TO RUN THIS SCRIPT, UNCOMMENT THE FOLLOWING
-# get_articles("default")
+get_articles("default")
